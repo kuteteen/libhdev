@@ -1,0 +1,10 @@
+Package: com.haoict.libhdev
+Name: libhdev
+Depends: mobilesubstrate, preferenceloader, firmware (>= 10)
+Architecture: iphoneos-arm
+Description: This is a developer library for better preferences and useful utilities.
+Maintainer: Hao Nguyen <hao.ict56@gmail.com>
+Author: Hao Nguyen <hao.ict56@gmail.com>
+Section: System
+Version: 1.0.0
+Tag: role::developer
