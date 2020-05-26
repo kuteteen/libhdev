@@ -39,4 +39,53 @@
   [killConfirm addAction:cancelAction];
   [viewController presentViewController:killConfirm animated:YES completion:nil];
 }
+
+
++ (void) showAlertMessage:(NSString *)message withTitle:(NSString *)title viewController:(UIViewController *)viewController {
+  __block UIWindow* topWindow;
+  if (!viewController) {
+    topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    topWindow.rootViewController = [UIViewController new];
+    topWindow.windowLevel = UIWindowLevelAlert + 1;
+  }
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+  [alert addAction:[UIAlertAction actionWithTitle:@"Ok" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    if (!viewController) {
+      topWindow.hidden = YES;
+      topWindow = nil;
+    }
+  }]];
+
+  if (!viewController) {
+    [topWindow makeKeyAndVisible];
+  }
+  [viewController ? viewController : topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+}
+
++ (void) showToastMessage:(NSString *)message withTitle:(NSString *)title timeout:(double)timeout viewController:(UIViewController *)viewController {
+  if (timeout <= 0.01) {
+    timeout = 1.0;
+  }
+  __block UIWindow* topWindow;
+  if (!viewController) {
+    topWindow = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
+    topWindow.rootViewController = [UIViewController new];
+    topWindow.windowLevel = UIWindowLevelAlert + 1;
+  }
+  UIAlertController* alert = [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
+  
+  if (!viewController) {
+    [topWindow makeKeyAndVisible];
+  }
+  [viewController ? viewController : topWindow.rootViewController presentViewController:alert animated:YES completion:nil];
+  
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(timeout * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+    [alert dismissViewControllerAnimated:YES completion:^{
+      if (!viewController) {
+        topWindow.hidden = YES;
+        topWindow = nil;
+      }
+    }];
+  });
+}
 @end

@@ -24,4 +24,6 @@
 + (UIColor *)colorFromHex:(NSString *)hexString;
 + (void)respring;
 + (void)killProcess:(NSString *)procName viewController:(UIViewController *)viewController alertTitle:(NSString *)alertTitle message:(NSString *)message confirmActionLabel:(NSString *)confirmActionLabel cancelActionLabel:(NSString *)cancelActionLabel;
++ (void)showAlertMessage:(NSString *)message withTitle:(NSString *)title viewController:(UIViewController *)viewController;
++ (void)showToastMessage:(NSString *)message withTitle:(NSString *)title timeout:(double)timeout viewController:(UIViewController *)viewController;
 @end
